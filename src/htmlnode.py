@@ -11,6 +11,8 @@ class HTMLNode():
         raise NotImplementedError()
 
     def props_to_html(self) -> str:
+        if self.props is None:
+            return ""
         html = ""
         for prop, val in self.props.items():
             html += f"{prop}={val} "
@@ -28,17 +30,53 @@ class HTMLNode():
 
     def __repr__(self):
         rep = ""
-        rep += "tag: "+self.tag
-        rep += "\nvalue: "+self.value
-        rep += "\nchildren: "+self.children
-        rep += "\nprops: "+self.props_to_html()
-        # for keys, vals in self:
-        #     if isinstance(vals, dict):
-        #         __repr__(vals)
-        #     else:
-        #         rep += vals
+        if self.tag is not None:
+            rep += "tag: "+self.tag
+        if self.value is not None:
+            rep += "\nvalue: "+self.value
+        if self.children is not None:
+            rep += f"\nchildren: {self.children}"
+        if self.props is not None:
+            rep += "\nprops: "+self.props_to_html()
         return rep
 
-# class LeafNode(HTMLNode):
-#     def __init__(self, value, tag=None):
-#         super().__init__(value, tag)
+class LeafNode(HTMLNode):
+    def __init__(self, tag, value, children=None, props=None):
+        if children is not None:
+            raise AttributeError("children are not allowed for LeafNodes")
+        super().__init__(value=value, tag=tag, props=props)
+
+    def to_html(self):
+        if self.value is None:
+            raise ValueError("Value cannot be empty")
+        if self.tag is None or self.tag == "":
+            return self.value
+        render = f"<{self.tag} {self.props_to_html()}".strip()+">"
+        render += f"{self.value}"
+        render += f"</{self.tag}>"
+
+        return render
+
+
+class ParentNode(HTMLNode):
+    def __init__(self, tag, value, children, props):
+        if value is not None:
+            raise AttributeError("Parent Nodes must not have values")
+        super().__init__(tag, None, children, props)
+
+    def to_html(self):
+        if self.tag is None:
+            raise ValueError("tag is not defined")
+        if self.children is None:
+            raise ValueError("Parent Node must have children")
+        
+        node = f"<{self.tag} {self.props_to_html()}".strip()+">"
+        for child in self.children:
+            # print("CHILD", child)
+            if child.children is not None:
+                for grandchild in child.children:
+                    grandchild.to_html()
+            node += child.to_html()
+        node += f"</{self.tag}>"
+        # print(node)
+        return node
