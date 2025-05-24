@@ -72,11 +72,9 @@ class ParentNode(HTMLNode):
         
         node = f"<{self.tag} {self.props_to_html()}".strip()+">"
         for child in self.children:
-            # print("CHILD", child)
             if child.children is not None:
                 for grandchild in child.children:
                     grandchild.to_html()
             node += child.to_html()
         node += f"</{self.tag}>"
-        # print(node)
         return node
