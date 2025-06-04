@@ -9,7 +9,6 @@ class TestSplitter(unittest.TestCase):
         new_node = split_nodes_delimiter([node1], "", TextType.TEXT)
         self.assertEqual(node1, new_node[0])
 
-    
     def test_code_node(self):
         node = TextNode("`Code` text", text_type=TextType.TEXT)
         new_node = split_nodes_delimiter([node], "`", TextType.CODE)
