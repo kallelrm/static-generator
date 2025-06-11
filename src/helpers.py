@@ -1,4 +1,5 @@
-import os 
+import os
+import pathlib
 from blocks import *
 
 def extract_title(markdown):
@@ -22,8 +23,9 @@ def generate_page(from_path, template_path, dest_path):
     # print(template)
     
     dirname = os.path.dirname(dest_path)
-    if dirname not in os.listdir('.'):
-        os.makedirs(dirname)
+    print("dirname", dirname)
+    if dirname not in os.listdir():
+        os.makedirs(dirname, exist_ok=True)
     # print(dirname)
 
     with open(dest_path, "w") as f:
@@ -32,3 +34,22 @@ def generate_page(from_path, template_path, dest_path):
     
     md_file.close()
     template_file.close()
+    return
+
+def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
+    print(dir_path_content)
+    dirs = os.listdir(dir_path_content)
+    print("DIRS", dirs)
+    if not dirs:
+        return
+    for entry in dirs:
+        print("ENTRY", entry)
+        path = os.path.join(dir_path_content, entry)
+        print("FORMED PATH", path)
+        isFile = os.path.isfile(path)
+        print("IS FILE", isFile)
+        if not isFile:
+            generate_page_recursive(path, template_path, dest_dir_path)
+        else:
+            generate_page(path, template_path, pathlib.Path(f"{os.path.join(dest_dir_path, path).replace("/content", "").removesuffix(".md")}.html"))
+    return
