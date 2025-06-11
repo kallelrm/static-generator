@@ -109,26 +109,28 @@ def text_to_header(md):
     p_node = ParentNode(f"h{count}", children=content)
     return p_node
 
-def text_to_quote(md):
-    lines = [text.strip() for text in re.split(r'\n? *>', md)[1:]]
 
-    aux_index = 0
-    quote_lines = []
-    for index, value in enumerate(lines):
-        if value == '':
-            quote_lines.append(" ".join(lines[aux_index: index]))
-            aux_index = index + 1
+def text_to_quote(block):
+    lines = block.split("\n")
+    new_lines = []
+    for line in lines:
+        if not line.startswith(">"):
+            raise ValueError("invalid quote block")
+        new_lines.append(line.lstrip(">").strip())
+    content = " ".join(new_lines)
+    children = text_to_children(content, True)
+    return ParentNode("blockquote", children)
+    # children = []
+    # for line in quote_lines:
+    #     if line.strip():
+    #         child = text_to_children(line, True)
+    #         print(child)
+    #         children.extend(child)
     
-    quote_lines.append(" ".join(lines[aux_index:]))
+    # print(children)
     
-    children = []
-    for line in quote_lines:
-        if line.strip():
-            child = text_to_children(line)
-            children.append(child)
-    
-    p_node = ParentNode("blockquote", children=children)
-    return p_node
+    # p_node = ParentNode("blockquote", ["\n".join(children)])
+    # return p_node
 
 
 def text_to_list(md, blocktype):
