@@ -8,7 +8,7 @@ def extract_title(markdown):
     else:
         raise Exception("No h1 header")
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}.")
     md_file = open(from_path)
     md = md_file.read()
@@ -20,6 +20,8 @@ def generate_page(from_path, template_path, dest_path):
     html_string = markdown_to_html_node(md).to_html()
     template = template.replace(r"{{ Title }}", title)
     template = template.replace(r"{{ Content }}", html_string)
+    template = template.replace(r'href="/', f'href="{basepath}')
+    template = template.replace(r'src="/', f'src="{basepath}')
     # print(template)
     
     dirname = os.path.dirname(dest_path)
@@ -36,7 +38,7 @@ def generate_page(from_path, template_path, dest_path):
     template_file.close()
     return
 
-def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_page_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     print(dir_path_content)
     dirs = os.listdir(dir_path_content)
     print("DIRS", dirs)
@@ -49,7 +51,12 @@ def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
         isFile = os.path.isfile(path)
         print("IS FILE", isFile)
         if not isFile:
-            generate_page_recursive(path, template_path, dest_dir_path)
+            generate_page_recursive(path, template_path, dest_dir_path, basepath)
         else:
-            generate_page(path, template_path, pathlib.Path(f"{os.path.join(dest_dir_path, path).replace("/content", "").removesuffix(".md")}.html"))
+            generate_page(
+                path, 
+                template_path, 
+                pathlib.Path(f"{os.path.join(dest_dir_path, path).replace("/content", "").removesuffix(".md")}.html"), 
+                basepath
+            )
     return
