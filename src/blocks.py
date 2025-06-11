@@ -85,12 +85,8 @@ def text_to_children(md, context=False):
     text = ' '.join(cleaned_lines)
     text = re.sub(r'\s+', ' ', text).strip()
 
-    print(text)
-
     text_nodes = text_to_textnodes(text)
-    print("text_nodes", text_nodes)
     html_children = [text_node.text_to_html_node() for text_node in text_nodes]
-    print("CHILDREN", html_children)
     if context:
         return html_children
     p_node = ParentNode("p", children=html_children)
@@ -140,13 +136,11 @@ def text_to_list(md, blocktype):
         lines = md.split("- ")[1:] 
     else:
         lines = re.split(r"\d+\.\s+", md)[1:]
-    print(lines)
 
     children = []
     for line in lines:
         if line.strip():
             inline_content = text_to_children(line.strip(), True)
-            print(inline_content)
             li_node = ParentNode("li", inline_content)
             children.append(li_node)
 

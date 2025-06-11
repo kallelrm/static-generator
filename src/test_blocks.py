@@ -123,9 +123,7 @@ class TestBlock(unittest.TestCase):
     """
 
         node = markdown_to_html_node(md)
-        # print(node)
         html = node.to_html()
-        # print(html)
         self.assertEqual(
             html,
             "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
@@ -148,16 +146,6 @@ class TestBlock(unittest.TestCase):
         node6 = markdown_to_html_node(header6)
         node_not_header = markdown_to_html_node(also_not_header)
 
-        # print("NODE1", node1)
-        # print(node1.to_html())
-        # # print("NODE2",node2)
-        # print(node2.to_html())
-        # # print("NODE3",node3)
-        # print(node3.to_html())
-        # # print("NODE6",node6)
-        # print(node6.to_html())
-        # print(node_not_header.to_html())
-
     def test_quotes(self):
         quotes1 = """
         > First Paragraph
@@ -173,8 +161,6 @@ class TestBlock(unittest.TestCase):
         """
 
         node = markdown_to_html_node(quotes1)
-        # print(node.to_html())
-        # print("NODE", node)
         self.assertEqual(
             node.to_html(),
             "<div><blockquote><p>First Paragraph Teste Teste Teste</p><p>Second Paragraph Teste TEste Teste 2</p><p>Third paragraph not alone</p></blockquote></div>"
@@ -202,7 +188,6 @@ class TestBlock(unittest.TestCase):
         """
 
         node = markdown_to_html_node(o_list)
-        # print(node.to_html())
         self.assertEqual(
             "<div><ol><li>item 1</li><li>item 2</li><li>item 3</li></ol></div>",
             node.to_html()

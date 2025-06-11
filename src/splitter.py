@@ -76,15 +76,15 @@ def split_nodes_image(old_nodes):
 
 
 def text_to_textnodes(text):
-    print(text, TextNode(text, TextType.TEXT))
+    # print(text, TextNode(text, TextType.TEXT))
     list_link = split_nodes_links([TextNode(text, TextType.TEXT)])
-    print("list link", list_link)
+    # print("list link", list_link)
     list_image = split_nodes_image(list_link)
-    print("list_image", list_image)
+    # print("list_image", list_image)
     list_bold = split_nodes_delimiter(list_image, "**", TextType.BOLD)
-    print("list bold", list_bold)
+    # print("list bold", list_bold)
     list_italic = split_nodes_delimiter(list_bold, "_", TextType.ITALIC)
-    print("list_italic", list_italic)
+    # print("list_italic", list_italic)
     list_code = split_nodes_delimiter(list_italic, "`", TextType.CODE)
-    print("list code", list_code)
+    # print("list code", list_code)
     return list_code
