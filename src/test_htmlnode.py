@@ -38,13 +38,13 @@ class TestLeafNode(unittest.TestCase):
 class TestParentNode(unittest.TestCase):
     def test_to_html_with_children(self):
         child_node = LeafNode("span", "child")
-        parent_node = ParentNode("div", None, [child_node], None)
+        parent_node = ParentNode("div", [child_node], None)
         self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
     
     def test_to_html_with_grandchildren(self):
         grandchild_node = LeafNode("b", "grandchild")
-        child_node = ParentNode("span", None, [grandchild_node], None)
-        parent_node = ParentNode("div", None, [child_node], None)
+        child_node = ParentNode("span", [grandchild_node], None)
+        parent_node = ParentNode("div", [child_node], None)
         self.assertEqual(
             parent_node.to_html(),
             "<div><span><b>grandchild</b></span></div>",
@@ -54,7 +54,7 @@ class TestParentNode(unittest.TestCase):
         child_node = LeafNode("b", "grandchild")
         child_node2 = LeafNode("a", "child 2", None, {"href": "http://teste.com"})
         child_node3 = LeafNode("", "no tag")
-        parent_node = ParentNode("div", None, [child_node, child_node2, child_node3], None)
+        parent_node = ParentNode("div", [child_node, child_node2, child_node3], None)
         parent_node.to_html()
         self.assertEqual(
             parent_node.to_html(), 
@@ -66,8 +66,8 @@ class TestParentNode(unittest.TestCase):
         grandchild_node_1 = LeafNode("b", "grandchild 1")
         grandchild_node_2 = LeafNode("a", "grandchild 2", None, {"href": "http://teste.com"})
         grandchild_node_3 = LeafNode("b", "grandchild 3")
-        child_node = ParentNode("span", None, [grandchild_node_1, grandchild_node_2, grandchild_node_3], None)
-        parent_node = ParentNode("div", None, [child_node], None)
+        child_node = ParentNode("span", [grandchild_node_1, grandchild_node_2, grandchild_node_3], None)
+        parent_node = ParentNode("div", [child_node], None)
         self.assertEqual(
             parent_node.to_html(),
             "<div><span><b>grandchild 1</b><a href=http://teste.com>grandchild 2</a><b>grandchild 3</b></span></div>",
@@ -83,10 +83,10 @@ class TestParentNode(unittest.TestCase):
         child_3_grandchild_node_1 = LeafNode("b", "child_3_grandchild 1")
         child_3_grandchild_node_2 = LeafNode("a", "child_3_grandchild 2", None, {"href": "http://teste3.com"})
         child_3_grandchild_node_3 = LeafNode("b", "child_3_grandchild 3", None, {"prop3": "prop3"})
-        child_node_1 = ParentNode("span", None, [child_1_grandchild_node_1, child_1_grandchild_node_2, child_1_grandchild_node_3], None)
-        child_node_2 = ParentNode("span", None, [child_2_grandchild_node_1, child_2_grandchild_node_2, child_2_grandchild_node_3], None)
-        child_node_3 = ParentNode("span", None, [child_3_grandchild_node_1, child_3_grandchild_node_2, child_3_grandchild_node_3], None)
-        parent_node = ParentNode("div", None, [child_node_1, child_node_2, child_node_3], None)
+        child_node_1 = ParentNode("span", [child_1_grandchild_node_1, child_1_grandchild_node_2, child_1_grandchild_node_3], None)
+        child_node_2 = ParentNode("span", [child_2_grandchild_node_1, child_2_grandchild_node_2, child_2_grandchild_node_3], None)
+        child_node_3 = ParentNode("span", [child_3_grandchild_node_1, child_3_grandchild_node_2, child_3_grandchild_node_3], None)
+        parent_node = ParentNode("div", [child_node_1, child_node_2, child_node_3], None)
         self.assertEqual(parent_node.to_html(), "<div><span><b>child_1_grandchild 1</b><a href=http://teste.com>child_1_grandchild 2</a><b>child_1_grandchild 3</b></span><span><b>child_2_grandchild 1</b><a href=http://teste2.com>child_2_grandchild 2</a><b>child_2_grandchild 3</b></span><span><b>child_3_grandchild 1</b><a href=http://teste3.com>child_3_grandchild 2</a><b prop3=prop3>child_3_grandchild 3</b></span></div>")
 
 if __name__ == "__main__":

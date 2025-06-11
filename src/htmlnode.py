@@ -15,7 +15,7 @@ class HTMLNode():
             return ""
         html = ""
         for prop, val in self.props.items():
-            html += f"{prop}={val} "
+            html += f'{prop}={val} '
         return html.strip()
 
     def __eq__(self, target):
@@ -59,7 +59,7 @@ class LeafNode(HTMLNode):
 
 
 class ParentNode(HTMLNode):
-    def __init__(self, tag, value, children, props):
+    def __init__(self, tag, children, value=None, props=None):
         if value is not None:
             raise AttributeError("Parent Nodes must not have values")
         super().__init__(tag, None, children, props)
@@ -72,9 +72,6 @@ class ParentNode(HTMLNode):
         
         node = f"<{self.tag} {self.props_to_html()}".strip()+">"
         for child in self.children:
-            if child.children is not None:
-                for grandchild in child.children:
-                    grandchild.to_html()
             node += child.to_html()
         node += f"</{self.tag}>"
         return node

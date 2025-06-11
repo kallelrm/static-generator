@@ -48,8 +48,8 @@ def split_nodes_links(old_nodes):
                     current_index = index + len(f"[{link[0]}]({link[1]})")
                 if node.text[current_index: ] != '':
                     new_nodes.append(TextNode(node.text[current_index:], TextType.TEXT))
-        else:
-            new_nodes.append(node)
+            else:
+                new_nodes.append(node)
     return new_nodes
 
 
@@ -68,14 +68,23 @@ def split_nodes_image(old_nodes):
                     current_index = index + len(f"![{img[0]}]({img[1]})")
                 if node.text[current_index: ] != '':
                     new_nodes.append(TextNode(node.text[current_index:], TextType.TEXT))
+            else:
+                new_nodes.append(node)
         else:
             new_nodes.append(node)
     return new_nodes
 
+
 def text_to_textnodes(text):
+    print(text, TextNode(text, TextType.TEXT))
     list_link = split_nodes_links([TextNode(text, TextType.TEXT)])
+    print("list link", list_link)
     list_image = split_nodes_image(list_link)
+    print("list_image", list_image)
     list_bold = split_nodes_delimiter(list_image, "**", TextType.BOLD)
+    print("list bold", list_bold)
     list_italic = split_nodes_delimiter(list_bold, "_", TextType.ITALIC)
+    print("list_italic", list_italic)
     list_code = split_nodes_delimiter(list_italic, "`", TextType.CODE)
+    print("list code", list_code)
     return list_code
