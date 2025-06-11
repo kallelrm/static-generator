@@ -22,7 +22,7 @@ def generate_page(from_path, template_path, dest_path, basepath):
     template = template.replace(r"{{ Content }}", html_string)
     template = template.replace(r'href="/', f'href="{basepath}')
     template = template.replace(r'src="/', f'src="{basepath}')
-    # print(template)
+    print(template)
     
     dirname = os.path.dirname(dest_path)
     print("dirname", dirname)

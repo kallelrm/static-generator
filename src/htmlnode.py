@@ -15,7 +15,7 @@ class HTMLNode():
             return ""
         html = ""
         for prop, val in self.props.items():
-            html += f'{prop}={val} '
+            html += f'{prop}="{val}" '
         return html.strip()
 
     def __eq__(self, target):
